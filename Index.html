@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemáticas Divertidas</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 5px solid #FF9A3C;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #4b7bec;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .welcome-title {
+            font-size: 3.5em;
+            color: #ff6b6b;
+            margin-bottom: 30px;
+            animation: bounce 2s infinite;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .grade-selection {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .grade-button {
+            background: linear-gradient(to bottom, #48c6ef 0%, #6f86d6 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .grade-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #fc67fa 0%, #f4c4f3 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .grade-button:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        .grade-button:hover:before {
+            opacity: 1;
+        }
+        
+        .tab-container {
+            margin: 20px 0;
+        }
+        
+        .tab-button {
+            background: linear-gradient(to bottom, #FF9A3C 0%, #FF5F6D 100%);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            padding: 12px 25px;
+            font-size: 1.3em;
+            cursor: pointer;
+            margin: 0 5px;
+            color: white;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 -5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(to bottom, #48c6ef 0%, #6f86d6 100%);
+            transform: translateY(-5px);
+        }
+        
+        .exercise-container {
+            display: none;
+            padding: 25px;
+            background: linear-gradient(to bottom, #f7f9fc 0%, #e6eeff 100%);
+            border-radius: 0 0 20px 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 5px 10px rgba(0,0,0,0.05);
+        }
+        
+        .exercise {
+            font-size: 2.5em;
+            margin: 25px 0;
+            color: #3742fa;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .options-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .option-button {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .option-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .result {
+            font-size: 1.7em;
+            margin: 25px 0;
+            min-height: 50px;
+        }
+        
+        .correct {
+            color: #20bf6b;
+            font-weight: bold;
+            animation: pop 0.5s;
+        }
+        
+        @keyframes pop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .incorrect {
+            color: #eb3b5a;
+            font-weight: bold;
+        }
+        
+        .score {
+            font-size: 1.4em;
+            margin: 15px 0;
+            color: #3742fa;
+            font-weight: bold;
+        }
+        
+        .next-button {
+            background: linear-gradient(to bottom, #48c6ef 0%, #6f86d6 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 12px 30px;
+            font-size: 1.4em;
+            cursor: pointer;
+            margin-top: 25px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .next-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            background: linear-gradient(to bottom, #36d1dc 0%, #5b86e5 100%);
+        }
+        
+        .progress-container {
+            width: 85%;
+            height: 25px;
+            background-color: #f1f2f6;
+            border-radius: 15px;
+            margin: 25px auto;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            padding: 3px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            border-radius: 15px;
+            background: linear-gradient(to right, #48c6ef 0%, #6f86d6 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .star {
+            color: gold;
+            font-size: 2.5em;
+            display: inline-block;
+            margin: 0 8px;
+            animation: spin 1s ease-in-out;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(0); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        .celebration {
+            margin: 20px 0;
+            min-height: 60px;
+        }
+        
+        /* Elementos animados */
+        .animated-character {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            z-index: 100;
+        }
+        
+        .character1 {
+            left: 5%;
+            bottom: 5%;
+            animation: floating 3s infinite ease-in-out, moveLeftRight 15s infinite alternate;
+        }
+        
+        .character2 {
+            right: 5%;
+            bottom: 5%;
+            animation: floating 3.5s infinite ease-in-out, moveRightLeft 18s infinite alternate;
+        }
+        
+        .character3 {
+            left: 15%;
+            top: 10%;
+            animation: floating 4s infinite ease-in-out, moveDiagonal 20s infinite alternate;
+        }
+        
+        .character4 {
+            right: 15%;
+            top: 10%;
+            animation: floating 3.2s infinite ease-in-out, moveDiagonal2 17s infinite alternate;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        @keyframes moveLeftRight {
+            0% { left: 2%; }
+            100% { left: 15%; }
+        }
+        
+        @keyframes moveRightLeft {
+            0% { right: 2%; }
+            100% { right: 15%; }
+        }
+        
+        @keyframes moveDiagonal {
+            0% { left: 5%; top: 5%; }
+            100% { left: 20%; top: 20%; }
+        }
+        
+        @keyframes moveDiagonal2 {
+            0% { right: 5%; top: 5%; }
+            100% { right: 20%; top: 20%; }
+        }
+        
+        .animal-face {
+            font-size: 4em;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+        }
+        
+        .back-button {
+            background: linear-gradient(to bottom, #ff9a9e 0%, #fad0c4 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .rainbow-text {
+            background-image: linear-gradient(to right, violet, indigo, blue, green, yellow, orange, red);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f0f;
+            opacity: 0.7;
+            animation: confetti-fall 3s linear forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de selección de curso -->
+    <div id="welcome-screen" class="container welcome-screen">
+        <h1 class="welcome-title">¡Matemáticas Divertidas!</h1>
+        <h2>Selecciona tu curso:</h2>
+        
+        <div class="grade-selection">
+            <button class="grade-button" onclick="seleccionarCurso(1)">1° Básico</button>
+            <button class="grade-button" onclick="seleccionarCurso(2)">2° Básico</button>
+        </div>
+        
+        <div class="animated-character character1">
+            <div class="animal-face">🐰</div>
+        </div>
+        
+        <div class="animated-character character2">
+            <div class="animal-face">🐶</div>
+        </div>
+        
+        <div class="animated-character character3">
+            <div class="animal-face">🐸</div>
+        </div>
+        
+        <div class="animated-character character4">
+            <div class="animal-face">🐱</div>
+        </div>
+    </div>
+    
+    <!-- Contenedor de ejercicios para 1° Básico -->
+    <div id="primero-basico" class="container hidden">
+        <h1>¡Matemáticas 1° Básico!</h1>
+        <button class="back-button" onclick="volverASeleccion()">Volver a selección de curso</button>
+        
+        <div class="tab-container">
+            <button class="tab-button active" onclick="changeTab('sumas-basicas', 'primero-basico')">Sumas Básicas</button>
+            <button class="tab-button" onclick="changeTab('restas-basicas', 'primero-basico')">Restas Básicas</button>
+        </div>
+        
+        <div id="sumas-basicas" class="exercise-container" style="display: block;">
+            <h2>¡Practica las <span class="rainbow-text">Sumas Básicas</span>!</h2>
+            <div class="exercise" id="suma-basica-ejercicio"></div>
+            <div class="options-container" id="suma-basica-opciones"></div>
+            <div class="result" id="suma-basica-resultado"></div>
+            <div class="celebration" id="suma-basica-celebracion"></div>
+            <div class="score">Puntos: <span id="suma-basica-puntos">0</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="suma-basica-progreso"></div>
+            </div>
+            <button class="next-button" onclick="generarSumaBasica()">Siguiente</button>
+        </div>
+        
+        <div id="restas-basicas" class="exercise-container">
+            <h2>¡Practica las <span class="rainbow-text">Restas Básicas</span>!</h2>
+            <div class="exercise" id="resta-basica-ejercicio"></div>
+            <div class="options-container" id="resta-basica-opciones"></div>
+            <div class="result" id="resta-basica-resultado"></div>
+            <div class="celebration" id="resta-basica-celebracion"></div>
+            <div class="score">Puntos: <span id="resta-basica-puntos">0</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="resta-basica-progreso"></div>
+            </div>
+            <button class="next-button" onclick="generarRestaBasica()">Siguiente</button>
+        </div>
+        
+        <div class="animated-character character1">
+            <div class="animal-face">🐰</div>
+        </div>
+        
+        <div class="animated-character character2">
+            <div class="animal-face">🐶</div>
+        </div>
+    </div>
+    
+    <!-- Contenedor de ejercicios para 2° Básico -->
+    <div id="segundo-basico" class="container hidden">
+        <h1>¡Matemáticas 2° Básico!</h1>
+        <button class="back-button" onclick="volverASeleccion()">Volver a selección de curso</button>
+        
+        <div class="tab-container">
+            <button class="tab-button active" onclick="changeTab('sumas-avanzadas', 'segundo-basico')">Sumas Avanzadas</button>
+            <button class="tab-button" onclick="changeTab('restas-avanzadas', 'segundo-basico')">Restas Avanzadas</button>
+            <button class="tab-button" onclick="changeTab('multiplicaciones', 'segundo-basico')">Multiplicaciones</button>
+        </div>
+        
+        <div id="sumas-avanzadas" class="exercise-container" style="display: block;">
+            <h2>¡Practica las <span class="rainbow-text">Sumas Avanzadas</span>!</h2>
+            <div class="exercise" id="suma-avanzada-ejercicio"></div>
+            <div class="options-container" id="suma-avanzada-opciones"></div>
+            <div class="result" id="suma-avanzada-resultado"></div>
+            <div class="celebration" id="suma-avanzada-celebracion"></div>
+            <div class="score">Puntos: <span id="suma-avanzada-puntos">0</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="suma-avanzada-progreso"></div>
+            </div>
+            <button class="next-button" onclick="generarSumaAvanzada()">Siguiente</button>
+        </div>
+        
+        <div id="restas-avanzadas" class="exercise-container">
+            <h2>¡Practica las <span class="rainbow-text">Restas Avanzadas</span>!</h2>
+            <div class="exercise" id="resta-avanzada-ejercicio"></div>
+            <div class="options-container" id="resta-avanzada-opciones"></div>
+            <div class="result" id="resta-avanzada-resultado"></div>
+            <div class="celebration" id="resta-avanzada-celebracion"></div>
+            <div class="score">Puntos: <span id="resta-avanzada-puntos">0</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="resta-avanzada-progreso"></div>
+            </div>
+            <button class="next-button" onclick="generarRestaAvanzada()">Siguiente</button>
+        </div>
+        
+        <div id="multiplicaciones" class="exercise-container">
+            <h2>¡Practica las <span class="rainbow-text">Multiplicaciones</span>!</h2>
+            <div class="exercise" id="multiplicacion-ejercicio"></div>
+            <div class="options-container" id="multiplicacion-opciones"></div>
+            <div class="result" id="multiplicacion-resultado"></div>
+            <div class="celebration" id="multiplicacion-celebracion"></div>
+            <div class="score">Puntos: <span id="multiplicacion-puntos">0</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="multiplicacion-progreso"></div>
+            </div>
+            <button class="next-button" onclick="generarMultiplicacion()">Siguiente</button>
+        </div>
+        
+        <div class="animated-character character1">
+            <div class="animal-face">🦊</div>
+        </div>
+        
+        <div class="animated-character character2">
+            <div class="animal-face">🐯</div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables para cada tipo de ejercicio
+        let sumaBasicaActual = {num1: 0, num2: 0, resultado: 0};
+        let restaBasicaActual = {num1: 0, num2: 0, resultado: 0};
+        let sumaAvanzadaActual = {num1: 0, num2: 0, resultado: 0};
+        let restaAvanzadaActual = {num1: 0, num2: 0, resultado: 0};
+        let multiplicacionActual = {num1: 0, num2: 0, resultado: 0};
+        
+        // Contadores de puntos
+        let puntosSubaBasica = 0;
+        let puntosRestaBasica = 0;
+        let puntosSubaAvanzada = 0;
+        let puntosRestaAvanzada = 0;
+        let puntosMultiplicacion = 0;
+        
+        // Contadores de ejercicios
+        let contadorSumaBasica = 0;
+        let contadorRestaBasica = 0;
+        let contadorSumaAvanzada = 0;
+        let contadorRestaAvanzada = 0;
+        let contadorMultiplicacion = 0;
+        
+        // Bloquear cambios automáticos
+        let bloqueoCambioAutomatico = false;
+        
+        // Función para seleccionar curso
+        function seleccionarCurso(curso) {
+            document.getElementById('welcome-screen').classList.add('hidden');
+            
+            if (curso === 1) {
+                document.getElementById('primero-basico').classList.remove('hidden');
+                generarSumaBasica();
+            } else {
+                document.getElementById('segundo-basico').classList.remove('hidden');
+                generarSumaAvanzada();
+            }
+            
+            // Crear efectos de confeti al seleccionar curso
+            crearConfeti();
+        }
+        
+        // Función para volver a la selección de curso
+        function volverASeleccion() {
+            document.getElementById('primero-basico').classList.add('hidden');
+            document.getElementById('segundo-basico').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        }
+        
+        // Función para cambiar entre pestañas
+        function changeTab(tabId, contenedor) {
+            // Ocultar todos los contenedores de ejercicios del contenedor actual
+            document.querySelectorAll(`#${contenedor} .exercise-container`).forEach(container => {
+                container.style.display = 'none';
+            });
+            
+            // Mostrar el contenedor seleccionado
+            document.getElementById(tabId).style.display = 'block';
+            
+            // Cambiar clases de los botones en el contenedor actual
+            document.querySelectorAll(`#${contenedor} .tab-button`).forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Activar el botón que coincide con la pestaña
+            event.currentTarget.classList.add('active');
+            
+            // Generar nuevo ejercicio si es necesario
+            if (tabId === 'sumas-basicas' && document.getElementById('suma-basica-ejercicio').innerText === '') {
+                generarSumaBasica();
+            } else if (tabId === 'restas-basicas' && document.getElementById('resta-basica-ejercicio').innerText === '') {
+                generarRestaBasica();
+            } else if (tabId === 'sumas-avanzadas' && document.getElementById('suma-avanzada-ejercicio').innerText === '') {
+                generarSumaAvanzada();
+            } else if (tabId === 'restas-avanzadas' && document.getElementById('resta-avanzada-ejercicio').innerText === '') {
+                generarRestaAvanzada();
+            } else if (tabId === 'multiplicaciones' && document.getElementById('multiplicacion-ejercicio').innerText === '') {
+                generarMultiplicacion();
+            }
+        }
+        
+        // Función para generar un número aleatorio en un rango
+        function numeroAleatorio(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        
+        // Función para barajar un array
+        function barajar(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        // Función para crear efectos de confeti
+        function crearConfeti() {
+            const colores = ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#54a0ff', '#ff9ff3'];
+            for (let i = 0; i < 100; i++) {
+                const confeti = document.createElement('div');
+                confeti.classList.add('confetti');
+                confeti.style.left = Math.random() * 100 + 'vw';
+                confeti.style.animationDelay = Math.random() * 3 + 's';
+                confeti.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+                document.body.appendChild(confeti);
+                
+                // Eliminar el confeti después de la animación
+                setTimeout(() => {
+                    confeti.remove();
+                }, 3000);
+            }
+        }
+        
+        // Función para crear celebración
+        function crearCelebracion(contenedor) {
+            const celebracionDiv = document.getElementById(contenedor);
+            celebracionDiv.innerHTML = '<span class="star">⭐</span><span class="star">⭐</span><span class="star">⭐</span>';
+            crearConfeti();
+        }
+        
+        // EJERCICIOS PARA 1° BÁSICO
+        
+        // Función para generar una suma básica (números del 0 al 10)
+        function generarSumaBasica() {
+            // Limpiar cualquier temporizador pendiente
+            bloqueoCambioAutomatico = true;
+            
+            const num1 = numeroAleatorio(0, 10);
+            const num2 = numeroAleatorio(0, 10);
+            const resultado = num1 + num2;
+            
+            sumaBasicaActual = {num1, num2, resultado};
+            
+            document.getElementById('suma-basica-ejercicio').innerText = `${num1} + ${num2} = ?`;
+            document.getElementById('suma-basica-resultado').innerText = '';
+            document.getElementById('suma-basica-celebracion').innerHTML = '';
+            
+            // Generar opciones (incluyendo la correcta y otras aleatorias)
+            const opciones = [resultado];
+            while (opciones.length < 4) {
+                const opcionAleatoria = numeroAleatorio(Math.max(0, resultado - 5), resultado + 5);
+                if (!opciones.includes(opcionAleatoria)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+            
+            // Barajar opciones
+            const opcionesBarajadas = barajar(opciones);
+            
+            // Mostrar opciones
+            const contenedorOpciones = document.getElementById('suma-basica-opciones');
+            contenedorOpciones.innerHTML = '';
+            
+            opcionesBarajadas.forEach(opcion => {
+                const boton = document.createElement('button');
+                boton.classList.add('option-button');
+                boton.innerText = opcion;
+                boton.onclick = () => verificarRespuestaSumaBasica(opcion);
+                contenedorOpciones.appendChild(boton);
+            });
+        }
+        
+        // Función para verificar respuesta de suma básica
+        function verificarRespuestaSumaBasica(respuesta) {
+            const resultadoDiv = document.getElementById('suma-basica-resultado');
+            
+            if (respuesta === sumaBasicaActual.resultado) {
+                resultadoDiv.innerHTML = `<span class="correct">¡Correcto! ${sumaBasicaActual.num1} + ${sumaBasicaActual.num2} = ${sumaBasicaActual.resultado}</span>`;
+                crearCelebracion('suma-basica-celebracion');
+                puntosSubaBasica++;
+                document.getElementById('suma-basica-puntos').innerText = puntosSubaBasica;
+            } else {
+                resultadoDiv.innerHTML = `<span class="incorrect">Intenta de nuevo. La respuesta correcta es ${sumaBasicaActual.resultado}.</span>`;
+            }
+            
+            // Actualizar progreso
+            contadorSumaBasica++;
+            const progreso = (contadorSumaBasica % 10) * 10;
+            document.getElementById('suma-basica-progreso').style.width = `${progreso}%`;
+            
+            // Deshabilitar botones después de responder
+            document.querySelectorAll('#suma-basica-opciones .option-button').forEach(btn => {
+                btn.disabled = true;
+                if (parseInt(btn.innerText) === sumaBasicaActual.resultado) {
+                    btn.style.backgroundColor = '#20bf6b';
+                }
+            });
+        }
+        
+        // Función para generar una resta básica (números del 0 al 10)
+        function generarRestaBasica() {
+            // Limpiar cualquier temporizador pendiente
+            bloqueoCambioAutomatico = true;
+            
+            // Asegurarse que el resultado no sea negativo
+            const num1 = numeroAleatorio(1, 10);
+            const num2 = numeroAleatorio(0, num1);
+            const resultado = num1 - num2;
+            
+            restaBasicaActual = {num1, num2, resultado};
+            
+            document.getElementById('resta-basica-ejercicio').innerText = `${num1} - ${num2} = ?`;
+            document.getElementById('resta-basica-resultado').innerText = '';
+            document.getElementById('resta-basica-celebracion').innerHTML = '';
+            
+            // Generar opciones (incluyendo la correcta y otras aleatorias)
+            const opciones = [resultado];
+            while (opciones.length < 4) {
+                const opcionAleatoria = numeroAleatorio(Math.max(0, resultado - 5), resultado + 5);
+                if (!opciones.includes(opcionAleatoria)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+            
+            // Barajar opciones
+            const opcionesBarajadas = barajar(opciones);
+            
+            // Mostrar opciones
+            const contenedorOpciones = document.getElementById('resta-basica-opciones');
+            contenedorOpciones.innerHTML = '';
+            
+            opcionesBarajadas.forEach(opcion => {
+                const boton = document.createElement('button');
+                boton.classList.add('option-button');
+                boton.innerText = opcion;
+                boton.onclick = () => verificarRespuestaRestaBasica(opcion);
+                contenedorOpciones.appendChild(boton);
+            });
+        }
+        
+        // Función para verificar respuesta de resta básica
+        function verificarRespuestaRestaBasica(respuesta) {
+            const resultadoDiv = document.getElementById('resta-basica-resultado');
+            
+            if (respuesta === restaBasicaActual.resultado) {
+                resultadoDiv.innerHTML = `<span class="correct">¡Correcto! ${restaBasicaActual.num1} - ${restaBasicaActual.num2} = ${restaBasicaActual.resultado}</span>`;
+                crearCelebracion('resta-basica-celebracion');
+                puntosRestaBasica++;
+                document.getElementById('resta-basica-puntos').innerText = puntosRestaBasica;
+            } else {
+                resultadoDiv.innerHTML = `<span class="incorrect">Intenta de nuevo. La respuesta correcta es ${restaBasicaActual.resultado}.</span>`;
+            }
+            
+            // Actualizar progreso
+            contadorRestaBasica++;
+            const progreso = (contadorRestaBasica % 10) * 10;
+            document.getElementById('resta-basica-progreso').style.width = `${progreso}%`;
+            
+            // Deshabilitar botones después de responder
+            document.querySelectorAll('#resta-basica-opciones .option-button').forEach(btn => {
+                btn.disabled = true;
+                if (parseInt(btn.innerText) === restaBasicaActual.resultado) {
+                    btn.style.backgroundColor = '#20bf6b';
+                }
+            });
+        }
+        
+        // EJERCICIOS PARA 2° BÁSICO
+        
+        // Función para generar una suma avanzada (números hasta 50)
+        function generarSumaAvanzada() {
+            // Limpiar cualquier temporizador pendiente
+            bloqueoCambioAutomatico = true;
+            
+            const num1 = numeroAleatorio(10, 50);
+            const num2 = numeroAleatorio(10, 50);
+            const resultado = num1 + num2;
+            
+            sumaAvanzadaActual = {num1, num2, resultado};
+            
+            document.getElementById('suma-avanzada-ejercicio').innerText = `${num1} + ${num2} = ?`;
+            document.getElementById('suma-avanzada-resultado').innerText = '';
+            document.getElementById('suma-avanzada-celebracion').innerHTML = '';
+            
+            // Generar opciones (incluyendo la correcta y otras aleatorias)
+            const opciones = [resultado];
+            while (opciones.length < 4) {
+                const opcionAleatoria = numeroAleatorio(Math.max(0, resultado - 10), resultado + 10);
+                if (!opciones.includes(opcionAleatoria)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+            
+            // Barajar opciones
+            const opcionesBarajadas = barajar(opciones);
+            
+            // Mostrar opciones
+            const contenedorOpciones = document.getElementById('suma-avanzada-opciones');
+            contenedorOpciones.innerHTML = '';
+            
+            opcionesBarajadas.forEach(opcion => {
+                const boton = document.createElement('button');
+                boton.classList.add('option-button');
+                boton.innerText = opcion;
+                boton.onclick = () => verificarRespuestaSumaAvanzada(opcion);
+                contenedorOpciones.appendChild(boton);
+            });
+        }
+        
+        // Función para verificar respuesta de suma avanzada
+        function verificarRespuestaSumaAvanzada(respuesta) {
+            const resultadoDiv = document.getElementById('suma-avanzada-resultado');
+            
+            if (respuesta === sumaAvanzadaActual.resultado) {
+                resultadoDiv.innerHTML = `<span class="correct">¡Correcto! ${sumaAvanzadaActual.num1} + ${sumaAvanzadaActual.num2} = ${sumaAvanzadaActual.resultado}</span>`;
+                crearCelebracion('suma-avanzada-celebracion');
+                puntosSubaAvanzada++;
+                document.getElementById('suma-avanzada-puntos').innerText = puntosSubaAvanzada;
+            } else {
+                resultadoDiv.innerHTML = `<span class="incorrect">Intenta de nuevo. La respuesta correcta es ${sumaAvanzadaActual.resultado}.</span>`;
+            }
+            
+            // Actualizar progreso
+            contadorSumaAvanzada++;
+            const progreso = (contadorSumaAvanzada % 10) * 10;
+            document.getElementById('suma-avanzada-progreso').style.width = `${progreso}%`;
+            
+            // Deshabilitar botones después de responder
+            document.querySelectorAll('#suma-avanzada-opciones .option-button').forEach(btn => {
+                btn.disabled = true;
+                if (parseInt(btn.innerText) === sumaAvanzadaActual.resultado) {
+                    btn.style.backgroundColor = '#20bf6b';
+                }
+            });
+        }
+        
+        // Función para generar una resta avanzada
+        function generarRestaAvanzada() {
+            // Limpiar cualquier temporizador pendiente
+            bloqueoCambioAutomatico = true;
+            
+            const num1 = numeroAleatorio(20, 100);
+            const num2 = numeroAleatorio(1, num1);
+            const resultado = num1 - num2;
+            
+            restaAvanzadaActual = {num1, num2, resultado};
+            
+            document.getElementById('resta-avanzada-ejercicio').innerText = `${num1} - ${num2} = ?`;
+            document.getElementById('resta-avanzada-resultado').innerText = '';
+            document.getElementById('resta-avanzada-celebracion').innerHTML = '';
+            
+            // Generar opciones (incluyendo la correcta y otras aleatorias)
+            const opciones = [resultado];
+            while (opciones.length < 4) {
+                const opcionAleatoria = numeroAleatorio(Math.max(0, resultado - 10), resultado + 10);
+                if (!opciones.includes(opcionAleatoria)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+            
+            // Barajar opciones
+            const opcionesBarajadas = barajar(opciones);
+            
+            // Mostrar opciones
+            const contenedorOpciones = document.getElementById('resta-avanzada-opciones');
+            contenedorOpciones.innerHTML = '';
+            
+            opcionesBarajadas.forEach(opcion => {
+                const boton = document.createElement('button');
+                boton.classList.add('option-button');
+                boton.innerText = opcion;
+                boton.onclick = () => verificarRespuestaRestaAvanzada(opcion);
+                contenedorOpciones.appendChild(boton);
+            });
+        }
+        
+        // Función para verificar respuesta de resta avanzada
+        function verificarRespuestaRestaAvanzada(respuesta) {
+            const resultadoDiv = document.getElementById('resta-avanzada-resultado');
+            
+            if (respuesta === restaAvanzadaActual.resultado) {
+                resultadoDiv.innerHTML = `<span class="correct">¡Correcto! ${restaAvanzadaActual.num1} - ${restaAvanzadaActual.num2} = ${restaAvanzadaActual.resultado}</span>`;
+                crearCelebracion('resta-avanzada-celebracion');
+                puntosRestaAvanzada++;
+                document.getElementById('resta-avanzada-puntos').innerText = puntosRestaAvanzada;
+            } else {
+                resultadoDiv.innerHTML = `<span class="incorrect">Intenta de nuevo. La respuesta correcta es ${restaAvanzadaActual.resultado}.</span>`;
+            }
+            
+            // Actualizar progreso
+            contadorRestaAvanzada++;
+            const progreso = (contadorRestaAvanzada % 10) * 10;
+            document.getElementById('resta-avanzada-progreso').style.width = `${progreso}%`;
+            
+            // Deshabilitar botones después de responder
+            document.querySelectorAll('#resta-avanzada-opciones .option-button').forEach(btn => {
+                btn.disabled = true;
+                if (parseInt(btn.innerText) === restaAvanzadaActual.resultado) {
+                    btn.style.backgroundColor = '#20bf6b';
+                }
+            });
+        }
+        
+        // Función para generar una multiplicación (tablas del 2 y del 3)
+        function generarMultiplicacion() {
+            // Limpiar cualquier temporizador pendiente
+            bloqueoCambioAutomatico = true;
+            
+            const tablas = [2, 3];
+            const num1 = tablas[Math.floor(Math.random() * tablas.length)];
+            const num2 = numeroAleatorio(1, 10);
+            const resultado = num1 * num2;
+            
+            multiplicacionActual = {num1, num2, resultado};
+            
+            document.getElementById('multiplicacion-ejercicio').innerText = `${num1} × ${num2} = ?`;
+            document.getElementById('multiplicacion-resultado').innerText = '';
+            document.getElementById('multiplicacion-celebracion').innerHTML = '';
+            
+            // Generar opciones (incluyendo la correcta y otras aleatorias)
+            const opciones = [resultado];
+            while (opciones.length < 4) {
+                const opcionAleatoria = numeroAleatorio(Math.max(1, resultado - 10), resultado + 10);
+                if (!opciones.includes(opcionAleatoria)) {
+                    opciones.push(opcionAleatoria);
+                }
+            }
+            
+            // Barajar opciones
+            const opcionesBarajadas = barajar(opciones);
+            
+            // Mostrar opciones
+            const contenedorOpciones = document.getElementById('multiplicacion-opciones');
+            contenedorOpciones.innerHTML = '';
+            
+            opcionesBarajadas.forEach(opcion => {
+                const boton = document.createElement('button');
+                boton.classList.add('option-button');
+                boton.innerText = opcion;
+                boton.onclick = () => verificarRespuestaMultiplicacion(opcion);
+                contenedorOpciones.appendChild(boton);
+            });
+        }
+        
+        // Función para verificar respuesta de multiplicación
+        function verificarRespuestaMultiplicacion(respuesta) {
+            const resultadoDiv = document.getElementById('multiplicacion-resultado');
+            
+            if (respuesta === multiplicacionActual.resultado) {
+                resultadoDiv.innerHTML = `<span class="correct">¡Correcto! ${multiplicacionActual.num1} × ${multiplicacionActual.num2} = ${multiplicacionActual.resultado}</span>`;
+                crearCelebracion('multiplicacion-celebracion');
+                puntosMultiplicacion++;
+                document.getElementById('multiplicacion-puntos').innerText = puntosMultiplicacion;
+            } else {
+                resultadoDiv.innerHTML = `<span class="incorrect">Intenta de nuevo. La respuesta correcta es ${multiplicacionActual.resultado}.</span>`;
+            }
+            
+            // Actualizar progreso
+            contadorMultiplicacion++;
+            const progreso = (contadorMultiplicacion % 10) * 10;
+            document.getElementById('multiplicacion-progreso').style.width = `${progreso}%`;
+            
+            // Deshabilitar botones después de responder
+            document.querySelectorAll('#multiplicacion-opciones .option-button').forEach(btn => {
+                btn.disabled = true;
+                if (parseInt(btn.innerText) === multiplicacionActual.resultado) {
+                    btn.style.backgroundColor = '#20bf6b';
+                }
+            });
+        }
+        
+        // Inicializar al cargar la página
+        window.onload = function() {
+            // No iniciar ningún ejercicio hasta que se elija un curso
+            document.getElementById('welcome-screen').classList.remove('hidden');
+        };
+    </script>
+</body>
+</html>
