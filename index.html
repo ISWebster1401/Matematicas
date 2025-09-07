@@ -23,6 +23,31 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             border: 5px solid #FF9A3C;
         }
+
+         /* Sello de agua */
+         .watermark {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    font-size: 1.2em;
+    color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+    .footer-watermark {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1em;
+        color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
         
         h1 {
             color: #ff6b6b;
@@ -362,6 +387,8 @@
     </style>
 </head>
 <body>
+
+    <div class="footer-watermark">© 2025 Karina Vargas Webster - Todos los derechos reservados</div>
     <!-- Pantalla de selección de curso -->
     <div id="welcome-screen" class="container welcome-screen">
         <h1 class="welcome-title">Cuenta conmigo a través de una Pantalla!</h1>
